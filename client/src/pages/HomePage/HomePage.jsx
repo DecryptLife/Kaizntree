@@ -5,7 +5,7 @@ import ItemList from "./ItemList";
 const HomePage = () => {
   return (
     <div className="w-full flex">
-      <div className="w-1/5">
+      <div className="w-1/5 h-screen bg-gray-800 text-white">
         <Sidebar />
       </div>
       <div className="flex flex-col w-4/5 p-8">

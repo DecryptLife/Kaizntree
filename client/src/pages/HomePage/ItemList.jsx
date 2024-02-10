@@ -3,6 +3,8 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
+  ChartBarIcon,
+  FunnelIcon,
 } from "@heroicons/react/24/solid";
 
 const ItemList = () => {
@@ -27,8 +29,6 @@ const ItemList = () => {
               <th className="item-list">Category</th>
               <th className="item-list">In Stock</th>
               <th className="item-list">Available Stocks</th>
-
-              <hr className="my-4 border-gray-300" />
             </tr>
           </thead>
         </table>
@@ -53,7 +53,7 @@ const ItemList = () => {
       {showList && (
         <div className="flex flex-col px-4 shadow-lg">
           {/* List Items Header */}
-          <div className="p-4">
+          <div className="flex  items-center justify-between  p-4">
             {/* buttons */}
             <div>
               <button className="text-white bg-green-600 p-3 px-8 rounded-lg shadow-md">
@@ -64,8 +64,17 @@ const ItemList = () => {
               </button>
             </div>
             {/* additional features */}
-            <div>
-              <input type="te" />
+            <div className="flex">
+              <div className="flex space-x-4">
+                <input className="px-4 py-2" type="text" placeholder="Search" />
+                <button className="px-4 text-gray-700">
+                  <MagnifyingGlassIcon className="w-12 h-12" />
+                </button>
+              </div>
+              <div className="flex space-x-2">
+                <ChartBarIcon className="w-12 h-12" />
+                <FunnelIcon className="w-12 h-12" />
+              </div>
             </div>
           </div>
           {/* List Items */}
