@@ -7,9 +7,17 @@ import {
   FunnelIcon,
 } from "@heroicons/react/24/solid";
 
+import AddItemWindow from "./AddItemWindow";
+
 const ItemList = () => {
   const [showList, setShowList] = useState(true);
+  const [itemSelected, setItemSelected] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setItemSelected((prev) => !prev);
+  };
   function changeItemsView() {
     setShowList((prevState) => !prevState);
   }
@@ -21,7 +29,12 @@ const ItemList = () => {
           <thead>
             <tr>
               <th className="item--list">
-                <input type="checkbox" className="form-checkbox" />
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  checked={itemSelected}
+                  onChange={handleCheckboxChange}
+                />
               </th>
               <th className="item-list">SKU</th>
               <th className="item-list">Name</th>
@@ -56,10 +69,20 @@ const ItemList = () => {
           <div className="flex  items-center justify-between  p-4">
             {/* buttons */}
             <div>
-              <button className="text-white bg-green-600 p-3 px-8 rounded-lg shadow-md">
+              <button
+                className="text-white bg-green-600 p-3 px-8 rounded-lg shadow-md"
+                onClick={() => setIsModalOpen(true)}
+              >
                 NEW ITEM
               </button>
-              <button className="bg-zinc-200 p-3 px-8 ml-8 shadow-md rounded-lg">
+              <button
+                className={`p-3 px-8 ml-8 shadow-md rounded-lg ${
+                  itemSelected
+                    ? "bg-zinc-200 hover:bg-zinc-300"
+                    : "bg-zinc-100 cursor-not-allowed"
+                }`}
+                disabled={!itemSelected}
+              >
                 OPTIONS
               </button>
             </div>
@@ -81,6 +104,7 @@ const ItemList = () => {
           <ItemListContentDetails />
         </div>
       )}
+      {isModalOpen && <AddItemWindow />}
     </div>
   );
 };
