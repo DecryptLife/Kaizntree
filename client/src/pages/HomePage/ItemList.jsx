@@ -8,12 +8,14 @@ import {
 } from "@heroicons/react/24/solid";
 
 import AddItemWindow from "./AddItemWindow";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { modalState } from "../../store/atoms/model";
 
 const ItemList = () => {
   const [showList, setShowList] = useState(true);
   const [itemSelected, setItemSelected] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
 
   const handleCheckboxChange = () => {
     setItemSelected((prev) => !prev);

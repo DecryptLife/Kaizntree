@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { modalState } from "../../store/atoms/model";
 const AddItemWindow = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const setModalState = useSetRecoilState(modalState);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,7 +21,7 @@ const AddItemWindow = () => {
     e.preventDefault();
     // Here you would handle the submission of the data to your database
     console.log(formData);
-    setIsModalOpen(false); // Close the modal after submit
+    setModalState(false); // Close the modal after submit
   };
 
   return (
@@ -83,7 +85,7 @@ const AddItemWindow = () => {
             </button>
             <button
               type="button"
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => setModalState(false)}
               className="px-4 py-2 ml-2 bg-red-500 text-white rounded hover:bg-red-700"
             >
               CANCEL
