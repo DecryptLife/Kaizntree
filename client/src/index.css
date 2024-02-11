@@ -7,21 +7,18 @@ body {
   height: 100%;
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login-form div {
-  margin-top: 1rem;
-}
-
 @layer components {
+  .shared-form-style {
+    @apply flex w-full flex-col;
+  }
+  .shared-form-style div {
+    @apply mt-4;
+  }
   .login-input {
-    @apply border p-3 rounded-xl;
+    @apply border p-3  w-full rounded-xl;
   }
   .login-buttons {
-    @apply bg-slate-100 rounded-xl text-sm p-3 shadow-md;
+    @apply bg-slate-100 rounded-xl text-sm p-3  px-8  font-bold shadow-md;
   }
 
   .list-item {

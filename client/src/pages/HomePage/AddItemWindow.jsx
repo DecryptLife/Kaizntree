@@ -4,7 +4,7 @@ import { modalState } from "../../store/atoms/model";
 const AddItemWindow = () => {
   const setModalState = useSetRecoilState(modalState);
   const [formData, setFormData] = useState({
-    name: "",
+    sku: "",
     email: "",
     // ... add more fields as necessary
   });
