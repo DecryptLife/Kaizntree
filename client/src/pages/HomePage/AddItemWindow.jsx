@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { modalState } from "../../store/atoms/model";
+import axios from "axios";
+import BASE_URL from "../../../config";
+
 const AddItemWindow = () => {
+  const url = (path) => `${BASE_URL}${path}`;
   const setModalState = useSetRecoilState(modalState);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     sku: "",
     email: "",
+    category: "",
     // ... add more fields as necessary
   });
 
@@ -24,6 +30,20 @@ const AddItemWindow = () => {
     setModalState(false); // Close the modal after submit
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(url("/api/category/"));
+        console.log(response.data);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories: ", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
@@ -34,7 +54,7 @@ const AddItemWindow = () => {
           <input
             type="text"
             name="sku"
-            value={formData.name}
+            value={formData.sku}
             onChange={handleInputChange}
             placeholder="SKU"
             className="block w-full p-2 border rounded mb-3"
@@ -48,23 +68,30 @@ const AddItemWindow = () => {
             className="block w-full p-2 border rounded mb-3"
           />
 
-          <input
+          <select
+            multiple
             type="text"
             name="tags"
-            value={formData.email}
+            value={formData.tags}
             onChange={handleInputChange}
             placeholder="Tags"
             className="block w-full p-2 border rounded mb-3"
           />
 
-          <input
-            type="text"
+          <select
+            type="select"
             name="category"
-            value={formData.email}
+            value={formData.category}
             onChange={handleInputChange}
             placeholder="Category"
             className="block w-full p-2 border rounded mb-3"
-          />
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.category}
+              </option>
+            ))}
+          </select>
 
           <input
             type="text"
