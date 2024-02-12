@@ -7,12 +7,14 @@ import tagState from "../../store/atoms/tags";
 import categoriesState from "../../store/atoms/categories";
 import axios from "axios";
 import BASE_URL from "../../../config";
+import itemsState from "../../store/atoms/items";
 
 const HomePage = () => {
   const url = (path) => `${BASE_URL}${path}`;
+
   const setTags = useSetRecoilState(tagState);
   const setCategories = useSetRecoilState(categoriesState);
-
+  const setItems = useSetRecoilState(itemsState);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -34,8 +36,18 @@ const HomePage = () => {
       }
     };
 
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(url("/api/items/"));
+        setItems(response.data);
+      } catch (error) {
+        console.error("Error fetching items");
+      }
+    };
+
     fetchCategories();
     fetchTags();
+    fetchItems();
   }, []);
   return (
     <div className="w-full flex">

@@ -10,13 +10,17 @@ import {
 import AddItemWindow from "./AddItemWindow";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "../../store/atoms/model";
+import categoriesState from "../../store/atoms/categories";
+import itemsState from "../../store/atoms/items";
 
 const ItemList = () => {
   const [showList, setShowList] = useState(true);
   const [itemSelected, setItemSelected] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
+  const [items, setItems] = useRecoilState(itemsState);
 
+  console.log(items);
   const handleCheckboxChange = () => {
     setItemSelected((prev) => !prev);
   };
@@ -24,13 +28,15 @@ const ItemList = () => {
     setShowList((prevState) => !prevState);
   }
 
+  const categories = useRecoilValue(categoriesState);
+
   function ItemListContentDetails() {
     return (
       <div className="overflow-x-auto">
         <table className="min-w-full leading-normal">
           <thead>
             <tr>
-              <th className="item--list">
+              <th className="item-list">
                 <input
                   type="checkbox"
                   className="form-checkbox"
@@ -38,14 +44,29 @@ const ItemList = () => {
                   onChange={handleCheckboxChange}
                 />
               </th>
-              <th className="item-list">SKU</th>
-              <th className="item-list">Name</th>
-              <th className="item-list">Tags</th>
-              <th className="item-list">Category</th>
-              <th className="item-list">In Stock</th>
-              <th className="item-list">Available Stocks</th>
+              <th className="item-list-header">SKU</th>
+              <th className="item-list-header">Name</th>
+              <th className="item-list-header">Tags</th>
+              <th className="item-list-header">Category</th>
+              <th className="item-list-header">In Stock</th>
+              <th className="item-list-header">Available Stocks</th>
             </tr>
           </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id}>
+                <td className="item-list">
+                  <input type="checkbox" className="form-checkbox" />
+                </td>
+                <td className="item-list">{item.sku}</td>
+                <td className="item-list">{item.name}</td>
+                <td className="item-list">{item.tags}</td>
+                <td className="item-list">{item.category}</td>
+                <td className="item-list">{item.in_stock}</td>
+                <td className="item-list">{item.available_stock}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     );
@@ -55,7 +76,7 @@ const ItemList = () => {
     <div className="h-2/3">
       <div className="flex justify-between h-12 bg-zinc-300 p-2 rounded-lg shadow">
         <div>
-          <span>4 Subcategories</span>
+          <span>{categories.length} Subcategories</span>
         </div>
         <div>
           {showList ? (

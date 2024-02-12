@@ -20,8 +20,10 @@ body {
   .login-buttons {
     @apply bg-slate-100 rounded-xl text-sm p-3  px-8  font-bold shadow-md;
   }
-
-  .list-item {
+  .item-list-header {
+    @apply px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  font-bold text-gray-600 uppercase tracking-wider;
+  }
+  .item-list {
     @apply px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
   }
 }
