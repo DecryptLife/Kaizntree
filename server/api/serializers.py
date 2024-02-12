@@ -4,7 +4,7 @@ from .models import Tag, Category, Item
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['id','tags']
+        fields = ['id','tag']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

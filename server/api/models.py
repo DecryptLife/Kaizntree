@@ -2,10 +2,10 @@ from django.db import models
 
 # Create your models here.
 class Tag(models.Model):
-    tags = models.CharField(max_length=50)
+    tag = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.tags
+        return self.tag
     
 class Category(models.Model):
     category = models.CharField(max_length=100)
