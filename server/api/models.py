@@ -17,8 +17,8 @@ class Category(models.Model):
 class Item(models.Model):
     sku = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=100)
-    tags = models.ManyToManyField(Tag)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, related_name='items')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     in_stock = models.IntegerField()
     available_stock = models.IntegerField()
 

@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:5173',  # The default port for React's development server
+     'http://localhost:5175',  # The default port for React's development server
 ]
 
 ROOT_URLCONF = "server.urls"
