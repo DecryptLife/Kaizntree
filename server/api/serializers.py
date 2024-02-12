@@ -4,12 +4,12 @@ from .models import Tag, Category, Item
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['name']
+        fields = ['id','tags']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name']
+        fields = ['id', 'category']
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -18,6 +18,6 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['sku','name','category', 'tags', 'in_stock', 'available_stock']
+        fields = ['id','sku','name','category', 'tags', 'in_stock', 'available_stock']
 
         

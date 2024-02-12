@@ -2,20 +2,20 @@ from django.db import models
 
 # Create your models here.
 class Tag(models.Model):
-    name = models.CharField(max_length=50)
+    tags = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return self.tags
     
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.category
     
 
 class Item(models.Model):
-    sku = models.CharField(max_length=50)
+    sku = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=100)
     tags = models.ManyToManyField(Tag)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
