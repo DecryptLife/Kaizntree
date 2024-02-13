@@ -5,6 +5,11 @@ import {
   MagnifyingGlassIcon,
   ChartBarIcon,
   FunnelIcon,
+  Cog6ToothIcon,
+  WrenchScrewdriverIcon,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  CurrencyDollarIcon,
 } from "@heroicons/react/24/solid";
 
 import AddItemWindow from "./AddItemWindow";
@@ -20,9 +25,16 @@ const ItemList = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
   const [items, setItems] = useRecoilState(itemsState);
   const categories = useRecoilValue(categoriesState);
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  console.log(items);
+  const [options, setOptions] = useState(["Update", "Delete"]);
+  const tagIcons = {
+    1: <Cog6ToothIcon className="tag-icon" />,
+    2: <WrenchScrewdriverIcon className="tag-icon" />,
+    3: <ShoppingBagIcon className="tag-icon" />,
+    4: <ShoppingCartIcon className="tag-icon" />,
+    5: <CurrencyDollarIcon className="tag-icon" />,
+  };
 
   function changeItemsView() {
     setShowList((prevState) => !prevState);
@@ -58,13 +70,45 @@ const ItemList = () => {
     return items.length > 0 && selectedItems.length === items.length;
   };
 
+  const handleUpdateItem = () => {};
+  const handleItemsDelete = () => {};
+
+  const handleOptionClick = (e) => {
+    const { name } = e.target;
+
+    if (name === "Update") {
+      handleUpdateItem();
+    } else {
+      handleItemsDelete();
+    }
+  };
+
+  const getStockColor = (stock) => {
+    if (stock < 1000) return "bg-red-600";
+    else if (stock < 10000) return "bg-yellow-500";
+    else return "bg-lime-600";
+  };
+
   useEffect(() => {
     if (selectedItems.length > 0) {
       setItemSelected(true);
+      if (selectedItems.length === 1) {
+        setOptions(["Update", "Delete"]);
+      }
     } else {
       setItemSelected(false);
+
+      setOptions(["Delete"]);
     }
   }, [selectedItems]);
+
+  const filteredItems = items.filter((item) => {
+    const query = searchQuery.toLowerCase();
+    const nameMatch = item.name.toLowerCase().includes(query);
+    const skuMatch = item.sku.toLowerCase().includes(query);
+
+    return nameMatch || skuMatch;
+  });
 
   function ItemListContentDetails() {
     return (
@@ -82,15 +126,15 @@ const ItemList = () => {
               </th>
               <th className="item-list-header">SKU</th>
               <th className="item-list-header">Name</th>
-              <th className="item-list-header">Tags</th>
+              <th className="item-list-header-center">Tags</th>
               <th className="item-list-header">Category</th>
               <th className="item-list-header">In Stock</th>
               <th className="item-list-header">Available Stocks</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
-              <tr key={item.id}>
+            {filteredItems.map((item) => (
+              <tr key={item.id} className="h-16">
                 <td className="item-list">
                   <input
                     type="checkbox"
@@ -101,10 +145,39 @@ const ItemList = () => {
                 </td>
                 <td className="item-list">{item.sku}</td>
                 <td className="item-list">{item.name}</td>
-                <td className="item-list">{item.tags}</td>
-                <td className="item-list">{item.category}</td>
-                <td className="item-list">{item.in_stock}</td>
-                <td className="item-list">{item.available_stock}</td>
+                <td className="item-list flex items-center justify-center h-16 w-full">
+                  {item.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center justify-center h-16"
+                    >
+                      {tagIcons[tag]}
+                    </span>
+                  ))}
+                </td>
+                <td className="item-list">
+                  {categories[item.category - 1].category}
+                </td>
+                <td className="item-list">
+                  <div className="flex justify-between ">
+                    <div
+                      className={`w-3 h-3 rounded-full ${getStockColor(
+                        item.available_stock
+                      )}`}
+                    ></div>
+                    <span className="w-4/6">{item.in_stock}</span>
+                  </div>
+                </td>
+                <td className="item-list">
+                  <div className="flex justify-between ">
+                    <div
+                      className={`w-3 h-3 rounded-full  ${getStockColor(
+                        item.available_stock
+                      )}`}
+                    ></div>
+                    <span className="w-4/6">{item.available_stock}</span>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -114,7 +187,7 @@ const ItemList = () => {
   }
 
   return (
-    <div className="h-2/3">
+    <div className="h-2/3 overflow-auto">
       <div className="flex justify-between h-12 bg-zinc-300 p-2 rounded-lg shadow">
         <div>
           <span>{categories.length} Subcategories</span>
@@ -128,9 +201,9 @@ const ItemList = () => {
         </div>
       </div>
       {showList && (
-        <div className="flex flex-col px-4 shadow-lg">
+        <div className="flex flex-col px-4  overflow-auto  shadow-lg">
           {/* List Items Header */}
-          <div className="flex  p-4">
+          <div className="flex justify-between  p-4">
             {/* buttons */}
             <div className="flex items-center">
               <div>
@@ -163,7 +236,20 @@ const ItemList = () => {
                   >
                     <div className="py-1" role="none">
                       {/* Option items */}
-                      <button
+                      {options.map((option) => {
+                        return (
+                          <button
+                            key={option}
+                            name={option}
+                            className="text-gray-700 block w-full text-left px-4 py-2 font-bold text-sm hover:bg-gray-100"
+                            role="menuitem"
+                            onClick={handleOptionClick}
+                          >
+                            {option}
+                          </button>
+                        );
+                      })}
+                      {/* <button
                         className="text-gray-700 block w-full text-left px-4 py-2 font-bold text-sm hover:bg-gray-100"
                         role="menuitem"
                       >
@@ -174,7 +260,7 @@ const ItemList = () => {
                         role="menuitem"
                       >
                         Delete
-                      </button>
+                      </button> */}
                       {/* ... more options here */}
                     </div>
                   </div>
@@ -183,11 +269,15 @@ const ItemList = () => {
             </div>
             {/* additional features */}
             <div className="flex">
-              <div className="flex space-x-4">
-                <input className="px-4 py-2" type="text" placeholder="Search" />
-                <button className="px-4 text-gray-700">
-                  <MagnifyingGlassIcon className="w-12 h-12" />
-                </button>
+              <div className="relative space-x-4">
+                <input
+                  className="px-4 py-2 h-12"
+                  type="text"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <MagnifyingGlassIcon className=" absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6" />
               </div>
               <div className="flex space-x-2">
                 <ChartBarIcon className="w-12 h-12" />

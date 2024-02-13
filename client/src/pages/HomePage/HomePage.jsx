@@ -63,7 +63,7 @@ const HomePage = () => {
       <div className="w-1/5 h-screen bg-gray-800 text-white">
         <Sidebar />
       </div>
-      <div className="flex flex-col w-4/5 p-8">
+      <div className="flex-1 flex-col max-h-screen w-4/5 p-8">
         <Summary />
         <ItemList />
       </div>
