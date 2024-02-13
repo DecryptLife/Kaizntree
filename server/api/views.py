@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from .serializers import ItemSerializer, CategorySerializer, TagSerializer, RegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.authentication import CookieJWTAuthentication
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -88,3 +89,10 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsAuthenticated]
+
+@api_view(['POST'])
+def logout(request):
+    response = JsonResponse({"message": "Logged out successfully"})
+    response.delete_cookie('access')
+    response.delete_cookie('refresh')
+    return response
