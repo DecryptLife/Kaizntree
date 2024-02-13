@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const sidebar_items_top = {
     Home: "/",
     Items: "/items",
@@ -16,7 +18,17 @@ const Sidebar = () => {
 
   function handleWasteClick() {}
 
-  function handleLogout() {}
+  async function handleLogout() {
+    try {
+      await axios.post(url("/api/logout/"), {
+        withCredentials: true,
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const sidebar_items_down = [
     { key: "Help", action: handleWasteClick },
 
