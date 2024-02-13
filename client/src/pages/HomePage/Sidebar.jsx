@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
+import BASE_URL from "../../../config";
 const Sidebar = () => {
+  const url = (path) => `${BASE_URL}${path}`;
   const navigate = useNavigate();
   const sidebar_items_top = {
     Home: "/",
