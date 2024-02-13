@@ -9,6 +9,8 @@ import axios from "axios";
 import BASE_URL from "../../../config";
 import itemsState from "../../store/atoms/items";
 
+axios.defaults.withCredentials = true;
+
 const HomePage = () => {
   const url = (path) => `${BASE_URL}${path}`;
 
@@ -18,17 +20,21 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(url("/api/category/"));
+        const response = await axios.get(url("/api/category/"), {
+          withCredentials: true,
+        });
         console.log(response.data);
         setCategories(response.data);
       } catch (error) {
-        console.error("Error fetching categories: ", error);
+        console.error("Error fetching categories: ", error.response || error);
       }
     };
 
     const fetchTags = async () => {
       try {
-        const response = await axios.get(url("/api/tags/"));
+        const response = await axios.get(url("/api/tags/"), {
+          withCredentials: true,
+        });
         console.log(response.data);
         setTags(response.data);
       } catch (error) {
@@ -38,9 +44,12 @@ const HomePage = () => {
 
     const fetchItems = async () => {
       try {
-        const response = await axios.get(url("/api/items/"));
+        const response = await axios.get(url("/api/items/"), {
+          withCredentials: true,
+        });
         setItems(response.data);
       } catch (error) {
+        console.log(error);
         console.error("Error fetching items");
       }
     };

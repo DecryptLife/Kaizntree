@@ -14,12 +14,16 @@ const Sidebar = () => {
     Reports: "/",
   };
 
-  const sidebar_items_down = {
-    Help: "/",
-    Integrations: "/",
-    Logout: "/",
-    "My Profile": "/",
-  };
+  function handleWasteClick() {}
+
+  function handleLogout() {}
+  const sidebar_items_down = [
+    { key: "Help", action: handleWasteClick },
+
+    { key: "Integrations", action: handleWasteClick },
+    { key: "Logout", action: handleLogout },
+    { key: "My Profile", action: handleWasteClick },
+  ];
   return (
     <div className="flex flex-col justify-between p-4 h-screen">
       {/* sidebar top */}
@@ -36,14 +40,14 @@ const Sidebar = () => {
       </div>
       {/* sidebar down */}
       <div>
-        {Object.entries(sidebar_items_down).map(([key, value]) => (
-          <Link
-            to={value}
-            key={key}
-            className="flex items-center  p-2 my-2 transition-colors duration-200 justify-start text-gray-800 hover:text-white hover:bg-yellow-500 rounded-lg "
+        {sidebar_items_down.map((menu) => (
+          <div
+            key={menu.key}
+            className="flex items-center p-2 my-2 transition-colors duration-200 justify text-gray-800 hover:text-white hover:bg-yellow-500 rounded-lg"
+            onClick={menu.action}
           >
-            <span className="mx-4 text-white font-bold">{key}</span>
-          </Link>
+            <span className="mx-4 text-white font-bold">{menu.key}</span>
+          </div>
         ))}
       </div>
     </div>

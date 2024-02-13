@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import kicon from "../../assets/kaizn_icon.webp";
 import { useCallback, useState } from "react";
 import PasswordStrength from "./PasswordStrength";
+import axios from "axios";
+import BASE_URL from "../../../config";
 
 export function Header() {
   return (
@@ -18,8 +20,10 @@ export function Header() {
 }
 
 const Login = () => {
-  const navigate = useNavigate();
+  const url = (path) => `${BASE_URL}${path}`;
 
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [loginDetails, setLoginDetails] = useState({
     username: "",
     password: "",
@@ -36,10 +40,34 @@ const Login = () => {
     },
     [loginDetails]
   );
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
-    navigate("/home");
+    console.log("Login clicked");
+    const payload = {
+      username: loginDetails.username,
+      password: loginDetails.password,
+    };
+
+    console.log(payload);
+
+    try {
+      const response = await axios.post(url("/api/login/"), payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log(response.data);
+      const data = response.data;
+
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+      setError("Invalid credentials");
+    }
   };
 
   function handleRegistration() {
@@ -91,6 +119,8 @@ const Login = () => {
               value="LOG IN"
             />
           </div>
+
+          {error && <div>{error}</div>}
           <div>
             <a className="underlined" href="/">
               Forgot Password
