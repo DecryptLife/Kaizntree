@@ -1,6 +1,10 @@
 from django.db import models
-
+from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin)
 # Create your models here.
+
+class CustomUser(AbstractBaseUser):
+    pass 
+
 class Tag(models.Model):
     tag = models.CharField(max_length=50)
 
@@ -13,7 +17,6 @@ class Category(models.Model):
     def __str__(self):
         return self.category
     
-
 class Item(models.Model):
     sku = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=100)
@@ -24,3 +27,4 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.sku} - {self.name} - {self.in_stock} - {self.available_stock}"
+    
